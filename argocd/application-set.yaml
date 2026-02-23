@@ -34,6 +34,7 @@ spec:
           helm:
            valueFiles:
              - $values/environments/qa2.yaml
+             - $values/services/{{ .repository }}/qa2.yaml
            values: |
              image:
                tag: '{{ index .services .repository  }}'
