@@ -21,7 +21,7 @@ spec:
           repoURL: https://github.com/deployment-demo/deployment-demo.git
           revision: HEAD
           files:
-            - path: "versions/qa1.yaml"
+            - path: "versions/qa2.yaml"
   template:
     metadata:
       name: '{{ .repository }}'
@@ -33,7 +33,7 @@ spec:
           path: "helm/"
           helm:
            valueFiles:
-             - $values/environments/qa1.yaml
+             - $values/environments/qa2.yaml
            values: |
              image:
                tag: '{{ index .services .repository  }}'
