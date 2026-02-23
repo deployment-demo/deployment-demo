@@ -18,7 +18,7 @@ spec:
           filters:
             - labelMatch: helm
       - git:
-          repoUrl: https://github.com/deployment-demo/deployment-demo.git
+          repoURL: https://github.com/deployment-demo/deployment-demo.git
           revision: HEAD
           files:
             - path: "versions/qa1.yaml"
@@ -27,10 +27,20 @@ spec:
       name: '{{ .repository }}'
     spec:
       project: "default"
-      source:
-        repoURL: '{{ .url }}'
-        targetRevision: '{{ index .versions .repository  }}'
-        path: "helm/"
+      sources:
+        - repoURL: '{{ .url }}'
+          targetRevision: HEAD
+          path: "helm/"
+          helm:
+           valueFiles:
+             - $values/environments/qa1.yaml
+           values: |
+             image:
+               tag: '{{ index .services .repository  }}'
+        - repoURL: https://github.com/deployment-demo/deployment-demo.git
+          targetRevision: HEAD
+          ref: values
       destination:
-        server: https://kubernetes.default.svc
-        namespace: argo-demo
+          server: https://kubernetes.default.svc
+          namespace: argo-demo
+ 
