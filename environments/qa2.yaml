@@ -1,4 +1,4 @@
-replicas: 3
+replicaCount: 3
 resources:
   requests:
     memory: 200Mi
