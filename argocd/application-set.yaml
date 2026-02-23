@@ -1,0 +1,36 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: my-microservices-application
+  namespace: argocd
+spec:
+  goTemplate: true
+  generators:
+  - matrix:
+      generators:
+      - scmProvider:
+          cloneProtocol: https
+          github:
+            organization: deployment-demo
+            tokenRef:
+              secretName: github-token
+              key: token
+          filters:
+            - labelMatch: helm
+      - git:
+          repoUrl: https://github.com/deployment-demo/deployment-demo.git
+          revision: HEAD
+          files:
+            - path: "versions/qa1.yaml"
+  template:
+    metadata:
+      name: '{{ .repository }}'
+    spec:
+      project: "default"
+      source:
+        repoURL: '{{ .url }}'
+        targetRevision: '{{ index .versions .repository  }}'
+        path: "helm/"
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: argo-demo
