@@ -44,4 +44,9 @@ spec:
       destination:
           server: https://kubernetes.default.svc
           namespace: argo-demo
+      syncPolicy:
+        automated:
+          enabled: true
+        syncOptions:
+        - CreateNamespace=true
  
